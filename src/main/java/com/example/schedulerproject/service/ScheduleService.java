@@ -53,8 +53,12 @@ public class ScheduleService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
+        // 수정 전 내용 저장해두기
+        String updatedTitle = (title != null) ? title : schedule.getTitle();
+        String updatedDescription = (description != null) ? description : schedule.getDescription();
+
         // 수정한 내용 업데이트
-        schedule.update(title, description);
+        schedule.update(updatedTitle, updatedDescription);
         return new ScheduleResponseDto(schedule.getId(), findUser.getUsername(),schedule.getTitle(),schedule.getDescription());
     }
 

@@ -41,7 +41,7 @@ public class UserService {
         return new UserResponseDto(findUser.getUsername(), findUser.getMail());
     }
 
-    // 3. 유저 수정 - 비밀번호 수정
+    // 3. 유저 수정 - 비밀번호 일치시, 비밀번호 수정
     @Transactional
     public void updatePassword(Long id, String oldPassword, String newPassword) {
 
@@ -52,6 +52,18 @@ public class UserService {
         }
 
         findUser.updatePassword(newPassword);
+    }
+
+    // 4. 유저 삭제 - 비밀번호 일치시
+    public void deleteUser(Long id, String password){
+        // 비밀번호 확인 - id로 유저찾기
+        User findUser = userRepository.findByIdOrElseThrow(id);
+        // 비밀번호 확인 - 예외 처리
+        if(!findUser.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+       userRepository.delete(findUser);
     }
 
 }

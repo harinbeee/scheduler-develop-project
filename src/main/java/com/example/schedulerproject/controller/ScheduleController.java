@@ -1,6 +1,6 @@
 package com.example.schedulerproject.controller;
 
-import com.example.schedulerproject.dto.DeleteScheduleRequestDto;
+import com.example.schedulerproject.dto.DeleteRequestDto;
 import com.example.schedulerproject.dto.ScheduleRequestDto;
 import com.example.schedulerproject.dto.ScheduleResponseDto;
 import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
@@ -55,7 +55,7 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSchedule (
             @PathVariable Long id,
-            @RequestBody DeleteScheduleRequestDto requestDto
+            @RequestBody DeleteRequestDto requestDto
     ) {
         scheduleService.deleteSchedule(id, requestDto.getPassword());
 

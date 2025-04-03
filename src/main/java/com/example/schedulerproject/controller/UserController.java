@@ -1,9 +1,6 @@
 package com.example.schedulerproject.controller;
 
-import com.example.schedulerproject.dto.SignUpRequestDto;
-import com.example.schedulerproject.dto.SignUpResponseDto;
-import com.example.schedulerproject.dto.UpdatePasswordRequestDto;
-import com.example.schedulerproject.dto.UserResponseDto;
+import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,6 +46,16 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 4. 유저 삭제 - 비밀번호 일치시
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id,
+            @RequestBody DeleteRequestDto requestDto
+    ){
+        userService.deleteUser(id, requestDto.getPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }

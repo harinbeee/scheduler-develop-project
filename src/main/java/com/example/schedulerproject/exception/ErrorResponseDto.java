@@ -14,7 +14,7 @@ public class ErrorResponseDto {
     public static ErrorResponseDto errorResponseDto (final CustomException customException) {
         String errorCode = customException.getErrorCode().getCode();
         String message = customException.getErrorCode().getMessage();
-        String status = customException.getStatus();
+        String status = customException.getStatus().name();
         return new ErrorResponseDto(errorCode, message, status);
     }
 

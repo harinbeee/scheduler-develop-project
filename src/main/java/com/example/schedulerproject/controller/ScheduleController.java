@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Schedules")
+@RequestMapping("/schedules")
 @RequiredArgsConstructor
 public class ScheduleController {
 
@@ -25,7 +25,7 @@ public class ScheduleController {
 
         ScheduleResponseDto scheduleResponseDto = scheduleService.save(requestDto.getTitle(), requestDto.getDescription(), requestDto.getUsername());
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
     }
 
     // 2. 게시물 조회

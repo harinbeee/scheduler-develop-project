@@ -2,6 +2,8 @@ package com.example.schedulerproject.controller;
 
 import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +59,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    **로그인 관련**
+    // 1. 로그인
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(
+            @RequestBody LoginRequestDto loginDto,
+            HttpServletRequest request
+    ) {
+        UserResponseDto userResponseDto = userService.login(loginDto.getMail(), loginDto.getPassword());
 
+        if (userResponseDto == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("loginUser",userResponseDto);
+        session.setMaxInactiveInterval(60*30);
+
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    }
 }

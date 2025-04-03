@@ -66,4 +66,20 @@ public class UserService {
        userRepository.delete(findUser);
     }
 
+
+//    **로그인**
+    // 이메일, 비밀번호로 로그인
+    public UserResponseDto login (final String mail, final String password) {
+        // 이메일로 회원정보 조회
+        User user = userRepository.findUserByMail(mail);
+        String usersPassword = (user==null) ? "" : user.getPassword();
+
+        if(user == null || !usersPassword.equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "메일, 비밀번호가 일치하지 않습니다.");
+        }
+
+        return new UserResponseDto(user.getUsername(), user.getMail());
+    }
+
+
 }

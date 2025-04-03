@@ -8,6 +8,7 @@ import com.example.schedulerproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class ScheduleService {
     }
 
     // 3. 스케줄 수정
+    @Transactional
     public ScheduleResponseDto updateSchedule(Long id, String title, String description, String password) {
 
         // 스케줄 찾기

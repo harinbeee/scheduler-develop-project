@@ -29,7 +29,7 @@ public class ScheduleController {
         HttpSession session = request.getSession(false);
         UserResponseDto loginUser = (UserResponseDto) session.getAttribute("loginUser"); // 다운캐스팅!!
 
-        // 유저네임은 자동 등록
+        // 유저네임은 가져오기
         ScheduleResponseDto scheduleResponseDto =
                 scheduleService.saveSchedule(requestDto.getTitle(), requestDto.getDescription(), loginUser.getUsername());
 

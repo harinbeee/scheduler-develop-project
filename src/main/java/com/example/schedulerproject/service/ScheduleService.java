@@ -30,7 +30,7 @@ public class ScheduleService {
         schedule.setUser(findUser);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
-        return new ScheduleResponseDto(savedSchedule.getId(), savedSchedule.getTitle(), savedSchedule.getDescription());
+        return new ScheduleResponseDto(savedSchedule.getId(), findUser.getUsername(), savedSchedule.getTitle(), savedSchedule.getDescription());
     }
 
     // 2. 스케줄 조회
@@ -55,7 +55,7 @@ public class ScheduleService {
 
         // 수정한 내용 업데이트
         schedule.update(title, description);
-        return new ScheduleResponseDto(schedule.getId(),schedule.getTitle(),schedule.getDescription());
+        return new ScheduleResponseDto(schedule.getId(), findUser.getUsername(),schedule.getTitle(),schedule.getDescription());
     }
 
     // 4. 스케줄 삭제

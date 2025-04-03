@@ -8,18 +8,22 @@ public class ScheduleResponseDto {
 
     private final Long id;
 
-    private final String title;
-
     private final String username;
 
-    public ScheduleResponseDto(Long id, String title, String username) {
+    private final String title;
+
+    private final String description;
+
+    public ScheduleResponseDto(Long id, String username, String title, String description) {
         this.id = id;
-        this.title = title;
         this.username = username;
+        this.title = title;
+        this.description=description;
+
     }
 
     // 스케줄 전체조회 - 엔티티 Dto로 변환
     public static ScheduleResponseDto toDto(Schedule schedule) {
-        return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getDescription());
+        return new ScheduleResponseDto(schedule.getId(),schedule.getUser().getUsername(), schedule.getTitle(), schedule.getDescription());
     }
 }

@@ -2,6 +2,7 @@ package com.example.schedulerproject.controller;
 
 import com.example.schedulerproject.dto.SignUpRequestDto;
 import com.example.schedulerproject.dto.SignUpResponseDto;
+import com.example.schedulerproject.dto.UpdatePasswordRequestDto;
 import com.example.schedulerproject.dto.UserResponseDto;
 import com.example.schedulerproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,18 @@ public class UserController {
         UserResponseDto userResponseDto = userService.findUserById(id);
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+    }
+
+    // 3. 유저 수정 - 비밀번호 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable Long id,
+            @RequestBody UpdatePasswordRequestDto requestDto
+    ) {
+
+        userService.updatePassword(id, requestDto.getOldPassword(), requestDto.getNewPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

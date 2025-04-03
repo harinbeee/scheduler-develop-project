@@ -35,4 +35,11 @@ public class User extends BaseEntity {
         this.mail = mail;
         this.password = password;
     }
+
+//    **메서드**
+    // 유저 비밀번호 수정
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 }

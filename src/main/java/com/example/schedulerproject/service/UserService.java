@@ -4,6 +4,7 @@ import com.example.schedulerproject.dto.SignUpResponseDto;
 import com.example.schedulerproject.dto.UserResponseDto;
 import com.example.schedulerproject.entity.User;
 import com.example.schedulerproject.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,17 @@ public class UserService {
         return new UserResponseDto(findUser.getUsername(), findUser.getMail());
     }
 
+    // 3. 유저 수정 - 비밀번호 수정
+    @Transactional
+    public void updatePassword(Long id, String oldPassword, String newPassword) {
+
+        User findUser = userRepository.findByIdOrElseThrow(id);
+
+        if (!findUser.getPassword().equals(oldPassword)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+        findUser.updatePassword(newPassword);
+    }
 
 }

@@ -38,6 +38,7 @@ public class Schedule extends BaseEntity {
         this.description = description;
     }
 
+//    **메서드**
     // 스케줄 생성 - 작성한 유저 이름 붙이기
     public void setUser(User user) {
         this.user = user;

@@ -1,6 +1,7 @@
 package com.example.schedulerproject.controller;
 
 import com.example.schedulerproject.dto.*;
+import com.example.schedulerproject.exception.LoginFailException;
 import com.example.schedulerproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -69,7 +70,7 @@ public class UserController {
         UserResponseDto userResponseDto = userService.login(loginDto.getMail(), loginDto.getPassword());
 
         if (userResponseDto == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new LoginFailException();
         }
 
         HttpSession session = request.getSession(true);

@@ -3,13 +3,13 @@ package com.example.schedulerproject.service;
 import com.example.schedulerproject.dto.ScheduleResponseDto;
 import com.example.schedulerproject.entity.Schedule;
 import com.example.schedulerproject.entity.User;
+import com.example.schedulerproject.exception.InvalidPasswordException;
+import com.example.schedulerproject.exception.ScheduleNotFoundException;
 import com.example.schedulerproject.repository.ScheduleRepository;
 import com.example.schedulerproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,7 +36,13 @@ public class ScheduleService {
 
     // 2. 스케줄 조회
     public List<ScheduleResponseDto> findAllSchedule() {
-        return scheduleRepository.findAll()
+        List<Schedule> schedules = scheduleRepository.findAll();
+
+        if(schedules.isEmpty()){
+            throw new ScheduleNotFoundException();
+        }
+
+        return schedules
                 .stream()
                 .map(ScheduleResponseDto::toDto)
                 .toList();
@@ -52,7 +58,7 @@ public class ScheduleService {
         User findUser = userRepository.findByIdOrElseThrow(id);
         // 비밀번호 확인 - 예외 처리
         if(!findUser.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         // 수정 전 내용 저장해두기
@@ -72,7 +78,7 @@ public class ScheduleService {
         User findUser = userRepository.findByIdOrElseThrow(id);
         // 비밀번호 확인 - 예외 처리
         if(!findUser.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         scheduleRepository.delete(schedule);

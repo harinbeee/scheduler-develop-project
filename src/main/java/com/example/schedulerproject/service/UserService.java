@@ -3,12 +3,13 @@ package com.example.schedulerproject.service;
 import com.example.schedulerproject.dto.SignUpResponseDto;
 import com.example.schedulerproject.dto.UserResponseDto;
 import com.example.schedulerproject.entity.User;
+import com.example.schedulerproject.exception.InvalidPasswordException;
+import com.example.schedulerproject.exception.LoginFailException;
+import com.example.schedulerproject.exception.UserNotFoundException;
 import com.example.schedulerproject.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -34,8 +35,12 @@ public class UserService {
 
         // NPE 방지
         if (optionalUser.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 유저 ID = "+ id);
+            throw new UserNotFoundException();
         }
+
+        // 찾는 유저가 없을때
+
+
         User findUser = optionalUser.get();
 
         return new UserResponseDto(findUser.getUsername(), findUser.getMail());
@@ -48,7 +53,7 @@ public class UserService {
         User findUser = userRepository.findByIdOrElseThrow(id);
 
         if (!findUser.getPassword().equals(oldPassword)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         findUser.updatePassword(newPassword);
@@ -60,7 +65,7 @@ public class UserService {
         User findUser = userRepository.findByIdOrElseThrow(id);
         // 비밀번호 확인 - 예외 처리
         if(!findUser.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
        userRepository.delete(findUser);
@@ -75,7 +80,7 @@ public class UserService {
         String usersPassword = (user==null) ? "" : user.getPassword();
 
         if(user == null || !usersPassword.equals(password)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "메일, 비밀번호가 일치하지 않습니다.");
+            throw new LoginFailException();
         }
 
         return new UserResponseDto(user.getUsername(), user.getMail());

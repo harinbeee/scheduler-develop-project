@@ -1,10 +1,9 @@
 package com.example.schedulerproject.controller;
 
-import com.example.schedulerproject.dto.DeleteRequestDto;
-import com.example.schedulerproject.dto.ScheduleRequestDto;
-import com.example.schedulerproject.dto.ScheduleResponseDto;
-import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
+import com.example.schedulerproject.dto.*;
 import com.example.schedulerproject.service.ScheduleService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +21,17 @@ public class ScheduleController {
 
     // 1. 스케줄 생성
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody ScheduleRequestDto requestDto){
+    public ResponseEntity<ScheduleResponseDto> saveSchedule(
+            @RequestBody ScheduleRequestDto requestDto,
+            HttpServletRequest request
+    ){
+        // 로그인 세션 불러오기
+        HttpSession session = request.getSession(false);
+        UserResponseDto loginUser = (UserResponseDto) session.getAttribute("loginUser"); // 다운캐스팅!!
 
+        // 유저네임은 자동 등록
         ScheduleResponseDto scheduleResponseDto =
-                scheduleService.saveSchedule(requestDto.getTitle(), requestDto.getDescription(), requestDto.getUsername());
+                scheduleService.saveSchedule(requestDto.getTitle(), requestDto.getDescription(), loginUser.getUsername());
 
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
     }

@@ -9,11 +9,9 @@ public class ScheduleRequestDto {
 
     private final String description;
 
-    private final String username;
 
-    public ScheduleRequestDto(String title, String description, String username) {
+    public ScheduleRequestDto(String title, String description) {
         this.title = title;
         this.description = description;
-        this.username = username;
     }
 }

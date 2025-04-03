@@ -38,4 +38,7 @@ public class Schedule extends BaseEntity {
     }
 
     // 작성한 유저 이름 붙이기
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

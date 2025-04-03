@@ -6,7 +6,9 @@ import com.example.schedulerproject.entity.User;
 import com.example.schedulerproject.repository.ScheduleRepository;
 import com.example.schedulerproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
     // 1. 스케줄 생성
-    public ScheduleResponseDto save(String title, String description, String username) {
+    public ScheduleResponseDto saveSchedule(String title, String description, String username) {
 
         User findUser = userRepository.findUserByUsernameOrElseThrow(username);
 
@@ -32,7 +34,7 @@ public class ScheduleService {
     }
 
     // 2. 스케줄 조회
-    public List<ScheduleResponseDto> findAll() {
+    public List<ScheduleResponseDto> findAllSchedule() {
         return scheduleRepository.findAll()
                 .stream()
                 .map(ScheduleResponseDto::toDto)
@@ -40,6 +42,24 @@ public class ScheduleService {
     }
 
     // 3. 스케줄 수정
+    public ScheduleResponseDto updateSchedule(Long id, String title, String description, String password) {
+
+        // 스케줄 찾기
+        Schedule schedule = scheduleRepository.findByIdOrElseThrow(id);
+
+        // 비밀번호 확인 - id로 유저찾기
+        User findUser = userRepository.findByIdOrElseThrow(id);
+        // 비밀번호 확인 - 예외 처리
+        if(!findUser.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+         schedule.update(title, description);
+
+        return new ScheduleResponseDto(schedule.getId(),schedule.getTitle(),schedule.getDescription());
+    }
+
+
 
     // 4. 스케줄 삭제
 

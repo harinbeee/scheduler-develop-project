@@ -32,14 +32,21 @@ public class Schedule extends BaseEntity {
     public Schedule() {
     }
 
-    // 일정 생성자
+    // 스케줄 생성자
     public Schedule(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    // 작성한 유저 이름 붙이기
+    // 스케줄 생성 - 작성한 유저 이름 붙이기
     public void setUser(User user) {
         this.user = user;
     }
+
+    // 스케줄 수정
+    public void update(String title, String description){
+        this.title=title;
+        this.description=description;
+    }
+
 }

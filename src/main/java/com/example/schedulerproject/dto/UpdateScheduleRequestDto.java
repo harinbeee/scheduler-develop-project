@@ -10,7 +10,7 @@ public class UpdateScheduleRequestDto {
 
     private final String description;
 
-    // 비밀번호 일치시 삭제
+    // 비밀번호 일치시 수정
     private final String password;
 
     public UpdateScheduleRequestDto(String title, String description, String password) {

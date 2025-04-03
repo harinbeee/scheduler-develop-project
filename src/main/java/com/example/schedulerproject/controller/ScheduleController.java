@@ -1,5 +1,6 @@
 package com.example.schedulerproject.controller;
 
+import com.example.schedulerproject.dto.DeleteScheduleRequestDto;
 import com.example.schedulerproject.dto.ScheduleRequestDto;
 import com.example.schedulerproject.dto.ScheduleResponseDto;
 import com.example.schedulerproject.dto.UpdateScheduleRequestDto;
@@ -50,7 +51,15 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
 
-    // 4. 스케줄 삭제
+    // 4. 스케줄 삭제 - 비밀번호 일치시
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSchedule (
+            @PathVariable Long id,
+            @RequestBody DeleteScheduleRequestDto requestDto
+    ) {
+        scheduleService.deleteSchedule(id, requestDto.getPassword());
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

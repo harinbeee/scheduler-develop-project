@@ -20,16 +20,16 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+
     // 1. 스케줄 생성
     public ScheduleResponseDto saveSchedule(String title, String description, String username) {
-
+        // 유저 이름으로 유저 찾기
         User findUser = userRepository.findUserByUsernameOrElseThrow(username);
 
         Schedule schedule =  new Schedule(title, description);
         schedule.setUser(findUser);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
-
         return new ScheduleResponseDto(savedSchedule.getId(), savedSchedule.getTitle(), savedSchedule.getDescription());
     }
 
@@ -46,7 +46,6 @@ public class ScheduleService {
 
         // 스케줄 찾기
         Schedule schedule = scheduleRepository.findByIdOrElseThrow(id);
-
         // 비밀번호 확인 - id로 유저찾기
         User findUser = userRepository.findByIdOrElseThrow(id);
         // 비밀번호 확인 - 예외 처리
@@ -54,13 +53,27 @@ public class ScheduleService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
-         schedule.update(title, description);
-
+        // 수정한 내용 업데이트
+        schedule.update(title, description);
         return new ScheduleResponseDto(schedule.getId(),schedule.getTitle(),schedule.getDescription());
     }
 
-
-
     // 4. 스케줄 삭제
+    public void deleteSchedule(Long id, String password) {
+        // 스케줄 찾기
+        Schedule schedule = scheduleRepository.findByIdOrElseThrow(id);
+        // 비밀번호 확인 - id로 유저찾기
+        User findUser = userRepository.findByIdOrElseThrow(id);
+        // 비밀번호 확인 - 예외 처리
+        if(!findUser.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
+
+        scheduleRepository.delete(schedule);
+
+
+
+    }
+
 
 }

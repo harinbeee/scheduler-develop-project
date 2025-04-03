@@ -22,6 +22,7 @@ public class Schedule extends BaseEntity {
     @Column(columnDefinition = "longtext")
     private String description;
 
+    // 테이블 연결
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

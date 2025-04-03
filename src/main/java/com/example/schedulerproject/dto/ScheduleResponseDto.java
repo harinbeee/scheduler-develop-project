@@ -1,5 +1,6 @@
 package com.example.schedulerproject.dto;
 
+import com.example.schedulerproject.entity.Schedule;
 import lombok.Getter;
 
 @Getter
@@ -17,7 +18,8 @@ public class ScheduleResponseDto {
         this.username = username;
     }
 
-//    public static ScheduleResponseDto toDto(Schedule schedule) {
-//        return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getDescription());
-//    }
+    // 스케줄 전체조회 - 엔티티 Dto로 변환
+    public static ScheduleResponseDto toDto(Schedule schedule) {
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getDescription());
+    }
 }

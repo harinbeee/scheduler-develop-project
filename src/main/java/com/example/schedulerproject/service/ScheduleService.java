@@ -54,8 +54,8 @@ public class ScheduleService {
 
         // 스케줄 찾기
         Schedule schedule = scheduleRepository.findByIdOrElseThrow(id);
-        // 비밀번호 확인 - id로 유저찾기
-        User findUser = userRepository.findByIdOrElseThrow(id);
+        // 스케줄에서 유저찾기
+        User findUser = schedule.getUser();
         // 비밀번호 확인 - 예외 처리
         if(!findUser.getPassword().equals(password)){
             throw new InvalidPasswordException();
@@ -74,8 +74,8 @@ public class ScheduleService {
     public void deleteSchedule(Long id, String password) {
         // 스케줄 찾기
         Schedule schedule = scheduleRepository.findByIdOrElseThrow(id);
-        // 비밀번호 확인 - id로 유저찾기
-        User findUser = userRepository.findByIdOrElseThrow(id);
+        // 스케줄에서 유저찾기
+        User findUser = schedule.getUser();
         // 비밀번호 확인 - 예외 처리
         if(!findUser.getPassword().equals(password)){
             throw new InvalidPasswordException();
